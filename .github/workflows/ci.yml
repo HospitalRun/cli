@@ -1,0 +1,47 @@
+name: GitHub CI
+
+on: [push, pull_request]
+
+jobs:
+  npm:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        node-version: [12.x, 13.x]
+        os: [ubuntu-latest, windows-latest, macOS-latest]
+    steps:
+      - run: git config --global core.autocrlf false # this is needed to prevent git changing EOL after cloning on Windows OS
+      - uses: actions/checkout@v2
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install with npm
+        run: |
+          npm install
+      - name: Build
+        run: |
+          npm run build
+
+  yarn:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        node-version: [12.x, 13.x]
+        os: [ubuntu-latest, windows-latest, macOS-latest]
+    steps:
+      - run: git config --global core.autocrlf false # this is needed to prevent git changing EOL after cloning on Windows OS
+      - uses: actions/checkout@v2
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Init yarn
+        run: |
+          npm install -g yarn
+      - name: Install with yarn
+        run: |
+          yarn install
+      - name: Build
+        run: |
+          yarn build
