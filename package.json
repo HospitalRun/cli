@@ -21,6 +21,7 @@
     "test:ci": "cross-env TS_NODE_PROJECT=./test/tsconfig.json tap --coverage-report=text-lcov test/**/*.ts | coveralls",
     "lint-staged": "lint-staged",
     "commitlint": "commitlint",
+    "coveralls": "test:ci",
     "semantic-release": "semantic-release"
   },
   "keywords": [],
