@@ -1,6 +1,6 @@
 {
   "name": "@hospitalrun/cli",
-  "version": "0.1.2",
+  "version": "0.0.0-development",
   "description": "HospitalRun CLI",
   "bin": {
     "hospitalrun": "bin/hospitalrun.js"
@@ -20,10 +20,11 @@
     "test": "cross-env TS_NODE_PROJECT=./test/tsconfig.json tap test/**/*.ts",
     "test:ci": "cross-env TS_NODE_PROJECT=./test/tsconfig.json tap --coverage-report=text-lcov test/**/*.ts | coveralls",
     "lint-staged": "lint-staged",
-    "commitlint": "commitlint"
+    "commitlint": "commitlint",
+    "semantic-release": "semantic-release"
   },
   "keywords": [],
-  "author": "Maksim Sinik <maksim@sinik.it>",
+  "author": "Maksim Sinik <maksim@hospitalrun.io>",
   "license": "MIT",
   "dependencies": {
     "chalk": "~3.0.0",
@@ -37,6 +38,11 @@
     "@commitlint/cli": "8.3.5",
     "@commitlint/config-conventional": "8.3.4",
     "@commitlint/prompt": "8.3.5",
+    "@semantic-release/changelog": "^5.0.0",
+    "@semantic-release/commit-analyzer": "^6.3.3",
+    "@semantic-release/git": "^9.0.0",
+    "@semantic-release/github": "^5.5.5",
+    "@semantic-release/release-notes-generator": "^9.0.0",
     "@types/glob": "~7.1.1",
     "@types/mkdirp": "~1.0.0",
     "@types/node": "~13.7.0",
@@ -59,7 +65,9 @@
     "prettier": "~1.19.1",
     "rimraf": "~3.0.0",
     "tap": "~14.10.5",
-    "tap-mocha-reporter": "~5.0.0"
+    "tap-mocha-reporter": "~5.0.0",
+    "typescript": "~3.8.3",
+    "semantic-release": "^17.0.4"
   },
   "config": {
     "commitizen": {

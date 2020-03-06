@@ -19,9 +19,15 @@ jobs:
       - name: Install with npm
         run: |
           npm install
+      - name: Lint code
+        run: |
+          npm run lint
       - name: Build
         run: |
           npm run build
+      - name: Run tests
+        run: |
+          npm run test:ci
 
   yarn:
     runs-on: ${{ matrix.os }}
@@ -42,6 +48,12 @@ jobs:
       - name: Install with yarn
         run: |
           yarn install
+      - name: Lint code
+        run: |
+          yarn lint
       - name: Build
         run: |
           yarn build
+      - name: Run tests
+        run: |
+          yarn test:ci
