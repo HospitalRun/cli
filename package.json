@@ -30,7 +30,8 @@
     "glob": "~7.1.6",
     "mkdirp": "~1.0.3",
     "require-from-string": "~2.0.2",
-    "sade": "~1.7.3"
+    "sade": "~1.7.3",
+    "typescript": "~3.8.3"
   },
   "devDependencies": {
     "@commitlint/cli": "8.3.5",
@@ -58,8 +59,7 @@
     "prettier": "~1.19.1",
     "rimraf": "~3.0.0",
     "tap": "~14.10.5",
-    "tap-mocha-reporter": "~5.0.0",
-    "typescript": "~3.8.3"
+    "tap-mocha-reporter": "~5.0.0"
   },
   "config": {
     "commitizen": {
