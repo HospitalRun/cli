@@ -2,7 +2,9 @@
   "name": "@hospitalrun/cli",
   "version": "0.1.0",
   "description": "HospitalRun CLI",
-  "bin": "bin",
+  "bin": {
+    "hospitalrun": "bin/hospitalrun.js"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/HospitalRun/cli.git"
