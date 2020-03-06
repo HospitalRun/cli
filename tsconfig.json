@@ -1,0 +1,34 @@
+{
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "./node_modules",
+    "./bin"
+  ],
+  "compilerOptions": {
+    "typeRoots": [
+      "./node_modules/@types",
+      "./typings"
+    ],
+    "moduleResolution": "node",
+    "target": "es2018",
+    "module": "commonjs",
+    "outDir": "bin",
+    "lib": [
+      "esnext"
+    ],
+    "strict": true,
+    "esModuleInterop": true,
+    "sourceMap": false,
+    "removeComments": true,
+    "newLine": "lf",
+    "noEmitOnError": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true
+  }
+}

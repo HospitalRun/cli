@@ -1,0 +1,79 @@
+{
+  "name": "@hospitalrun/cli",
+  "version": "2.0.0-alpha.1",
+  "description": "HospitalRun CLI",
+  "bin": "bin",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/HospitalRun/cli.git"
+  },
+  "scripts": {
+    "hospitalrun": "npm run build && node bin/hospitalrun",
+    "commit": "npx git-cz",
+    "build": "npm run clean && tsc -p ./tsconfig.json",
+    "clean": "rimraf bin",
+    "update": "yarn upgrade-interactive --latest",
+    "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\"",
+    "lint:fix": "eslint \"src/**/*.{js,jsx,ts,tsx}\"",
+    "test": "cross-env TS_NODE_PROJECT=./test/tsconfig.json tap test/**/*.ts",
+    "test:ci": "cross-env TS_NODE_PROJECT=./test/tsconfig.json tap --coverage-report=text-lcov test/**/*.ts | coveralls",
+    "lint-staged": "lint-staged",
+    "commitlint": "commitlint"
+  },
+  "keywords": [],
+  "author": "Maksim Sinik <maksim@sinik.it>",
+  "license": "MIT",
+  "dependencies": {
+    "chalk": "~3.0.0",
+    "glob": "~7.1.6",
+    "mkdirp": "~1.0.3",
+    "require-from-string": "~2.0.2",
+    "sade": "~1.7.3"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "8.3.5",
+    "@commitlint/config-conventional": "8.3.4",
+    "@commitlint/prompt": "8.3.5",
+    "@types/glob": "~7.1.1",
+    "@types/mkdirp": "~1.0.0",
+    "@types/node": "~13.7.0",
+    "@types/require-from-string": "~1.2.0",
+    "@types/sade": "~1.6.0",
+    "@typescript-eslint/eslint-plugin": "~2.21.0",
+    "@typescript-eslint/parser": "~2.21.0",
+    "commitizen": "~4.0.3",
+    "commitlint-config-cz": "~0.13.0",
+    "coveralls": "~3.0.9",
+    "cross-env": "~7.0.0",
+    "cz-conventional-changelog": "~3.1.0",
+    "dotenv": "~8.2.0",
+    "eslint": "~6.8.0",
+    "eslint-config-prettier": "~6.10.0",
+    "eslint-plugin-import": "~2.20.0",
+    "eslint-plugin-prettier": "~3.1.0",
+    "husky": "~4.2.0",
+    "lint-staged": "~10.0.7",
+    "prettier": "~1.19.1",
+    "rimraf": "~3.0.0",
+    "tap": "~14.10.5",
+    "tap-mocha-reporter": "~5.0.0",
+    "typescript": "~3.8.3"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "npm run commitlint -- -E HUSKY_GIT_PARAMS",
+      "pre-commit": "npm run lint-staged"
+    }
+  },
+  "lint-staged": {
+    "**/*.{js,jsx,ts,tsx}": [
+      "npm run lint:fix",
+      "git add ."
+    ]
+  }
+}
