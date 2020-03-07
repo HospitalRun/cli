@@ -28,6 +28,8 @@
   "author": "Maksim Sinik <maksim@hospitalrun.io>",
   "license": "MIT",
   "dependencies": {
+    "@sinclair/typebox": "~0.9.5",
+    "ajv": "~6.12.0",
     "chalk": "~3.0.0",
     "glob": "~7.1.6",
     "mkdirp": "~1.0.3",
@@ -67,7 +69,6 @@
     "rimraf": "~3.0.0",
     "tap": "~14.10.5",
     "tap-mocha-reporter": "~5.0.0",
-    "typescript": "~3.8.3",
     "semantic-release": "~17.0.4"
   },
   "config": {
