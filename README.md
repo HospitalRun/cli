@@ -7,7 +7,7 @@
 
 </div>
 
-This repository will host CLI for the HospitalRun project.
+This repository will host Command Line Interface for the HospitalRun project. The CLI is written in Typescript and uses sade, chalk and glob. The purpose of this CLI is to start the project and migrate the CouchDB database from version 1.0.0-beta to v2.
 
 <hr />
 
