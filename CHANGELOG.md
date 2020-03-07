@@ -1,3 +1,10 @@
+# [0.2.0](https://github.com/HospitalRun/cli/compare/v0.1.4...v0.2.0) (2020-03-07)
+
+
+### Features
+
+* add extract command ([ebf4807](https://github.com/HospitalRun/cli/commit/ebf480731bbfaf330a809cc20e518dec19fae079))
+
 ## [0.1.4](https://github.com/HospitalRun/cli/compare/v0.1.3...v0.1.4) (2020-03-07)
 
 
