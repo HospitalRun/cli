@@ -1,3 +1,10 @@
+## [0.2.1](https://github.com/HospitalRun/cli/compare/v0.2.0...v0.2.1) (2020-03-07)
+
+
+### Bug Fixes
+
+* fix github actions ([2d84527](https://github.com/HospitalRun/cli/commit/2d845278f7b7b3d09191a67093e6d646ebc39411))
+
 # [0.2.0](https://github.com/HospitalRun/cli/compare/v0.1.4...v0.2.0) (2020-03-07)
 
 
