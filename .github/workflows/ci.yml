@@ -27,7 +27,7 @@ jobs:
           npm run build
       - name: Run tests
         run: |
-          npm run test:ci
+          npm run test
 
   yarn:
     runs-on: ${{ matrix.os }}
@@ -56,4 +56,4 @@ jobs:
           yarn build
       - name: Run tests
         run: |
-          yarn test:ci
+          yarn test
