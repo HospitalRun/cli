@@ -1,3 +1,11 @@
+## [0.1.4](https://github.com/HospitalRun/cli/compare/v0.1.3...v0.1.4) (2020-03-07)
+
+
+### Bug Fixes
+
+* **deps:** set upgradeable version for deps ([1264b44](https://github.com/HospitalRun/cli/commit/1264b44cd1cfdbb21658ea755af5801ca095c099))
+* **package:** fix typo ([d81524d](https://github.com/HospitalRun/cli/commit/d81524d4d2e618e7a76ed704c7b363dd048b485b))
+
 # 1.0.0 (2020-03-06)
 
 
