@@ -9,13 +9,13 @@
 
 This repository will host Command Line Interface for the HospitalRun project. The CLI is written in Typescript and uses sade, chalk and glob. The purpose of this CLI is to start the project and migrate the CouchDB database from version 1.0.0-beta to v2.
 
-Features:
-- build couchdb design documents from typescript code
-- extract and convert to json|ts|js design documents from couchdb backups
+Main features:
+- Build CouchDB design documents from TypeScript code
+- Extract and convert to `.json``.ts``.js` design documents from CouchDB backups
 
 TODO list:
-1. allow backups directly from HR cli
-2. add command to run hospitalrun frontend/server inside docker
+[] Allow backups directly from HR cli
+[] Add command to run HospitalRun frontend/server inside Docker
 
 <hr />
 
