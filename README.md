@@ -11,11 +11,11 @@ This repository will host Command Line Interface for the HospitalRun project. Th
 
 Main features:
 - Build CouchDB design documents from TypeScript code
-- Extract and convert to `.json``.ts``.js` design documents from CouchDB backups
+- Extract and convert to `.json` `.ts` `.js` design documents from CouchDB backups
 
 TODO list:
-[] Allow backups directly from HR cli
-[] Add command to run HospitalRun frontend/server inside Docker
+* [ ] Allow backups directly from HR cli
+* [ ] Add command to run HospitalRun frontend/server inside Docker
 
 <hr />
 
