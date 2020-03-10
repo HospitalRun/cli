@@ -62,13 +62,6 @@ jobs:
         run: |
           yarn test
 
-
-on:
-  push:
-    branches:
-      - master
-
-jobs:
   release:
     name: Release
     needs: [npm, yarn]
