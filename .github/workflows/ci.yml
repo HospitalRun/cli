@@ -25,14 +25,9 @@ jobs:
       - name: Build
         run: |
           npm run build
-      - name: Test
+      - name: Test and Coveralls
         run: |
           npm run test:ci
-      - name: Coveralls
-        uses: coverallsapp/github-action@master
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          path-to-lcov: ./lcov.info
 
   yarn:
     runs-on: ${{ matrix.os }}
