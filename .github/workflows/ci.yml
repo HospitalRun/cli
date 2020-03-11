@@ -27,7 +27,7 @@ jobs:
           npm run build
       - name: Run tests
         run: |
-          npm run test
+          npm run test:ci
 
   yarn:
     runs-on: ${{ matrix.os }}
@@ -77,6 +77,6 @@ jobs:
           npm run build
       - name: Release
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.BOT_GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npx semantic-release
