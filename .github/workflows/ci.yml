@@ -25,14 +25,9 @@ jobs:
       - name: Build
         run: |
           npm run build
-      - name: Test
+      - name: Run tests
         run: |
-          npm run test:ci
-      - name: Coveralls
-        uses: coverallsapp/github-action@master
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          path-to-lcov: ./lcov.info
+          npm run test
 
   yarn:
     runs-on: ${{ matrix.os }}
@@ -72,6 +67,12 @@ jobs:
         uses: actions/checkout@v2
       - name: Setup Node.js
         uses: actions/setup-node@v1
+      - name: Install with npm
+        run: |
+          npm install -q
+      - name: Build
+        run: |
+          npm run build
         with:
           node-version: 12
       - name: Release
