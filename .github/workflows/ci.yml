@@ -25,9 +25,14 @@ jobs:
       - name: Build
         run: |
           npm run build
-      - name: Run tests
+      - name: Test
         run: |
-          npm run test
+          npm run test:ci
+      - name: Coveralls
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path-to-lcov: ./lcov.info
 
   yarn:
     runs-on: ${{ matrix.os }}
@@ -57,3 +62,20 @@ jobs:
       - name: Run tests
         run: |
           yarn test
+
+  release:
+    name: Release
+    needs: [npm, yarn]
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      - name: Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npx semantic-release
