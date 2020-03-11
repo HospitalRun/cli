@@ -67,14 +67,14 @@ jobs:
         uses: actions/checkout@v2
       - name: Setup Node.js
         uses: actions/setup-node@v1
+        with:
+          node-version: 12
       - name: Install with npm
         run: |
           npm install -q
       - name: Build
         run: |
           npm run build
-        with:
-          node-version: 12
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
