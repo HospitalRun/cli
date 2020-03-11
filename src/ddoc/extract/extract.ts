@@ -41,7 +41,10 @@ const DesignDocumentSchema = Type.Object({
 
 type DesignDocument = Static<typeof DesignDocumentSchema>
 
-export default async function(src: string, opts: { destination: string; format: string }) {
+export default async function(
+  src: string,
+  opts: { destination: string; format: string; noVerbose?: boolean },
+) {
   const methods = new Map<string, string>()
   try {
     if (!FORMATS.includes(opts.format)) {
@@ -49,7 +52,12 @@ export default async function(src: string, opts: { destination: string; format: 
     }
     const srcPath = path.resolve(src)
     const dbBackup = (await readFIle(srcPath)).toString()
-    console.log(`> ${chalk.bgBlueBright(chalk.black(' ddoc extract src '))} ${chalk.cyan(srcPath)}`)
+
+    if (!opts.noVerbose) {
+      console.log(
+        `> ${chalk.bgBlueBright(chalk.black(' ddoc extract src '))} ${chalk.cyan(srcPath)}`,
+      )
+    }
 
     const main = JSON.parse(dbBackup.replace(/\]\n\[/g, ',')) as any[]
     const designDocuments = main.filter(doc => doc._id.startsWith('_design/')) as DesignDocument[]
@@ -78,13 +86,17 @@ export default async function(src: string, opts: { destination: string; format: 
       const filename = `${path.basename(src, path.extname(src))}-designs.${opts.format}`
       const dest = path.resolve(path.join(opts.destination, filename))
 
-      console.log(`> ${chalk.bgBlueBright(chalk.black(' ddoc extract designs found '))}`)
-      console.table(stats)
+      if (!opts.noVerbose) {
+        console.log(`> ${chalk.bgBlueBright(chalk.black(' ddoc extract designs found '))}`)
+        console.table(stats)
+      }
       await mkdirp(path.dirname(dest))
 
-      console.log(
-        `> ${chalk.bgGreenBright(chalk.black(' ddoc extract destination '))} ${chalk.cyan(dest)}`,
-      )
+      if (!opts.noVerbose) {
+        console.log(
+          `> ${chalk.bgGreenBright(chalk.black(' ddoc extract destination '))} ${chalk.cyan(dest)}`,
+        )
+      }
 
       await writeFile(dest, JSON.stringify(designDocuments, null, 1))
     } else {
@@ -153,11 +165,13 @@ export default async function(src: string, opts: { destination: string; format: 
         }
       }
 
-      console.log(
-        `> ${chalk.bgBlueBright(
-          chalk.black(' ddoc extract designs creating destination folder '),
-        )}`,
-      )
+      if (!opts.noVerbose) {
+        console.log(
+          `> ${chalk.bgBlueBright(
+            chalk.black(' ddoc extract designs creating destination folder '),
+          )}`,
+        )
+      }
 
       const destFolder = path.resolve(
         path.join(opts.destination, `${path.basename(src, path.extname(src))}-designs`),
@@ -169,9 +183,12 @@ export default async function(src: string, opts: { destination: string; format: 
         const filename = `${doc._id?.split('_design/')[1]}-${doc._rev}.${
           opts.format === 'js' ? 'js' : 'ts'
         }`
-        console.log(
-          `> ${chalk.bgBlueBright(chalk.black(` ddoc extract designs creating ${filename} `))}`,
-        )
+
+        if (!opts.noVerbose) {
+          console.log(
+            `> ${chalk.bgBlueBright(chalk.black(` ddoc extract designs creating ${filename} `))}`,
+          )
+        }
         const dest = path.resolve(path.join(destFolder, filename))
 
         let docString =
@@ -185,8 +202,10 @@ export default async function(src: string, opts: { destination: string; format: 
         await writeFile(dest, docString)
       }
 
-      console.log(`> ${chalk.bgGreenBright(chalk.black(' ddoc extract designs done '))}`)
-      console.table(stats)
+      if (!opts.noVerbose) {
+        console.log(`> ${chalk.bgGreenBright(chalk.black(' ddoc extract designs done '))}`)
+        console.table(stats)
+      }
     }
   } catch (err) {
     console.error(chalk.bgRed(chalk.white(` ${err.message} `)))
