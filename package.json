@@ -18,7 +18,7 @@
     "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\"",
     "lint:fix": "eslint \"src/**/*.{js,jsx,ts,tsx}\"",
     "test": "cross-env TS_NODE_PROJECT=./test/tsconfig.json tap test/**/*.ts",
-    "test:ci": "cross-env TS_NODE_PROJECT=./test/tsconfig.json tap --coverage-report=text-lcov test/**/*.ts",
+    "test:ci": "cross-env TS_NODE_PROJECT=./test/tsconfig.json tap --coverage-report=text-lcov test/**/*.ts | coveralls",
     "lint-staged": "lint-staged",
     "commitlint": "commitlint",
     "semantic-release": "semantic-release"
@@ -49,6 +49,7 @@
     "@types/mkdirp": "~1.0.0",
     "@types/node": "~13.9.0",
     "@types/require-from-string": "~1.2.0",
+    "@types/rimraf": "~2.0.3",
     "@types/sade": "~1.6.0",
     "@typescript-eslint/eslint-plugin": "~2.23.0",
     "@typescript-eslint/parser": "~2.23.0",
@@ -65,10 +66,10 @@
     "husky": "~4.2.0",
     "lint-staged": "~10.0.7",
     "prettier": "~1.19.1",
-    "rimraf": "~3.0.0",
+    "rimraf": "~3.0.2",
+    "semantic-release": "~17.0.4",
     "tap": "~14.10.5",
-    "tap-mocha-reporter": "~5.0.0",
-    "semantic-release": "~17.0.4"
+    "tap-mocha-reporter": "~5.0.0"
   },
   "config": {
     "commitizen": {
