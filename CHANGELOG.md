@@ -1,3 +1,10 @@
+# [0.3.0](https://github.com/HospitalRun/cli/compare/v0.2.1...v0.3.0) (2020-03-11)
+
+
+### Features
+
+* add tests for extract ([bf15c94](https://github.com/HospitalRun/cli/commit/bf15c9426bef135fa0bd9afcc077baea0bacde8d))
+
 ## [0.2.1](https://github.com/HospitalRun/cli/compare/v0.2.0...v0.2.1) (2020-03-07)
 
 
