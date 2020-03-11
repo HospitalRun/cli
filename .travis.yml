@@ -10,7 +10,6 @@ script:
   - npm run lint
   - npm run build
   - npm run test:ci
-  - echo $(cat lcov.info)
 after_success:
   - npm run semantic-release
 
