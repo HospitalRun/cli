@@ -79,5 +79,6 @@ jobs:
           npm run build
       - name: Release
         env:
+          GH_TOKEN: ${{ secrets.BOT_PAT }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npx semantic-release
