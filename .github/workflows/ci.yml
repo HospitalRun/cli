@@ -65,6 +65,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+        with:
+          GITHUB_TOKEN: ${{ secrets.BOT_GITHUB_TOKEN }}
       - name: Setup Node.js
         uses: actions/setup-node@v1
         with:
@@ -77,6 +79,5 @@ jobs:
           npm run build
       - name: Release
         env:
-          GITHUB_TOKEN: ${{ secrets.BOT_GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npx semantic-release
