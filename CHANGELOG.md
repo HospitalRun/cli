@@ -1,3 +1,13 @@
+## [0.3.1](https://github.com/HospitalRun/cli/compare/v0.3.0...v0.3.1) (2020-03-12)
+
+
+### Bug Fixes
+
+* **actions:** add missing script on release step ([2f1ad6e](https://github.com/HospitalRun/cli/commit/2f1ad6eae0223f450794876e971e29210cad71cd))
+* **actions:** fix coveralls ([006b55f](https://github.com/HospitalRun/cli/commit/006b55fc37655fe8e428cfb1bd9f1b9efaab6f6a))
+* **actions:** fix typo ([64f0239](https://github.com/HospitalRun/cli/commit/64f0239c34922cea5170980a8abc6a08a6b27d56))
+* **coveralls:** fix test script ([5cfe35d](https://github.com/HospitalRun/cli/commit/5cfe35da0696257cf71841960f68269364c3beea))
+
 # [0.3.0](https://github.com/HospitalRun/cli/compare/v0.2.1...v0.3.0) (2020-03-11)
 
 

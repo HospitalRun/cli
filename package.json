@@ -1,6 +1,6 @@
 {
   "name": "@hospitalrun/cli",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "HospitalRun CLI",
   "bin": {
     "hospitalrun": "bin/hospitalrun.js"
