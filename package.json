@@ -47,7 +47,7 @@
     "@semantic-release/release-notes-generator": "~9.0.0",
     "@types/glob": "~7.1.1",
     "@types/mkdirp": "~1.0.0",
-    "@types/node": "~13.11.0",
+    "@types/node": "~13.13.0",
     "@types/require-from-string": "~1.2.0",
     "@types/rimraf": "~3.0.0",
     "@types/sade": "~1.6.0",
