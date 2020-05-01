@@ -1,3 +1,10 @@
+# [0.4.0](https://github.com/HospitalRun/cli/compare/v0.3.1...v0.4.0) (2020-05-01)
+
+
+### Features
+
+* **ci:** add new sementic release job ([c90c246](https://github.com/HospitalRun/cli/commit/c90c246e7abf609568f24b9f7d5a1e939dd51867))
+
 ## [0.3.1](https://github.com/HospitalRun/cli/compare/v0.3.0...v0.3.1) (2020-03-12)
 
 
@@ -36,4 +43,3 @@
 
 * **deps:** set upgradeable version for deps ([1264b44](https://github.com/HospitalRun/cli/commit/1264b44cd1cfdbb21658ea755af5801ca095c099))
 * **package:** fix typo ([d81524d](https://github.com/HospitalRun/cli/commit/d81524d4d2e618e7a76ed704c7b363dd048b485b))
-
