@@ -45,7 +45,9 @@ async function default_1(src, opts) {
         }
         const srcPath = path_1.default.resolve(src);
         const dbBackup = (await readFIle(srcPath)).toString();
-        console.log(`> ${chalk_1.default.bgBlueBright(chalk_1.default.black(' ddoc extract src '))} ${chalk_1.default.cyan(srcPath)}`);
+        if (!opts.noVerbose) {
+            console.log(`> ${chalk_1.default.bgBlueBright(chalk_1.default.black(' ddoc extract src '))} ${chalk_1.default.cyan(srcPath)}`);
+        }
         const main = JSON.parse(dbBackup.replace(/\]\n\[/g, ','));
         const designDocuments = main.filter(doc => doc._id.startsWith('_design/'));
         const stats = {
@@ -70,10 +72,14 @@ async function default_1(src, opts) {
             }
             const filename = `${path_1.default.basename(src, path_1.default.extname(src))}-designs.${opts.format}`;
             const dest = path_1.default.resolve(path_1.default.join(opts.destination, filename));
-            console.log(`> ${chalk_1.default.bgBlueBright(chalk_1.default.black(' ddoc extract designs found '))}`);
-            console.table(stats);
+            if (!opts.noVerbose) {
+                console.log(`> ${chalk_1.default.bgBlueBright(chalk_1.default.black(' ddoc extract designs found '))}`);
+                console.table(stats);
+            }
             await mkdirp_1.default(path_1.default.dirname(dest));
-            console.log(`> ${chalk_1.default.bgGreenBright(chalk_1.default.black(' ddoc extract destination '))} ${chalk_1.default.cyan(dest)}`);
+            if (!opts.noVerbose) {
+                console.log(`> ${chalk_1.default.bgGreenBright(chalk_1.default.black(' ddoc extract destination '))} ${chalk_1.default.cyan(dest)}`);
+            }
             await writeFile(dest, JSON.stringify(designDocuments, null, 1));
         }
         else {
@@ -141,12 +147,16 @@ async function default_1(src, opts) {
                     doc.rewrites = name;
                 }
             }
-            console.log(`> ${chalk_1.default.bgBlueBright(chalk_1.default.black(' ddoc extract designs creating destination folder '))}`);
+            if (!opts.noVerbose) {
+                console.log(`> ${chalk_1.default.bgBlueBright(chalk_1.default.black(' ddoc extract designs creating destination folder '))}`);
+            }
             const destFolder = path_1.default.resolve(path_1.default.join(opts.destination, `${path_1.default.basename(src, path_1.default.extname(src))}-designs`));
             await mkdirp_1.default(destFolder);
             for (const doc of designDocuments) {
                 const filename = `${(_a = doc._id) === null || _a === void 0 ? void 0 : _a.split('_design/')[1]}-${doc._rev}.${opts.format === 'js' ? 'js' : 'ts'}`;
-                console.log(`> ${chalk_1.default.bgBlueBright(chalk_1.default.black(` ddoc extract designs creating ${filename} `))}`);
+                if (!opts.noVerbose) {
+                    console.log(`> ${chalk_1.default.bgBlueBright(chalk_1.default.black(` ddoc extract designs creating ${filename} `))}`);
+                }
                 const dest = path_1.default.resolve(path_1.default.join(destFolder, filename));
                 let docString = opts.format === 'js'
                     ? `module.exports = ${JSON.stringify(doc, null, 1)}`
@@ -156,8 +166,10 @@ async function default_1(src, opts) {
                 }
                 await writeFile(dest, docString);
             }
-            console.log(`> ${chalk_1.default.bgGreenBright(chalk_1.default.black(' ddoc extract designs done '))}`);
-            console.table(stats);
+            if (!opts.noVerbose) {
+                console.log(`> ${chalk_1.default.bgGreenBright(chalk_1.default.black(' ddoc extract designs done '))}`);
+                console.table(stats);
+            }
         }
     }
     catch (err) {

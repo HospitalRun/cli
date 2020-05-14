@@ -41,7 +41,7 @@ const DesignDocumentSchema = Type.Object({
 
 type DesignDocument = Static<typeof DesignDocumentSchema>
 
-export default async function(
+export default async function (
   src: string,
   opts: { destination: string; format: string; noVerbose?: boolean },
 ) {
