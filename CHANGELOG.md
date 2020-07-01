@@ -1,3 +1,10 @@
+## [0.4.2](https://github.com/HospitalRun/cli/compare/v0.4.1...v0.4.2) (2020-07-01)
+
+
+### Bug Fixes
+
+* **build command:** remove unnecessary spaces on built documents ([5eafb39](https://github.com/HospitalRun/cli/commit/5eafb3918ffa8938d9025e41439d8af28acc30b9))
+
 ## [0.4.1](https://github.com/HospitalRun/cli/compare/v0.4.0...v0.4.1) (2020-07-01)
 
 
