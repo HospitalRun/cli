@@ -1,3 +1,10 @@
+## [0.4.3](https://github.com/HospitalRun/cli/compare/v0.4.2...v0.4.3) (2020-07-01)
+
+
+### Bug Fixes
+
+* **toolchain:** remove auto add . after lint on commit ([ed389db](https://github.com/HospitalRun/cli/commit/ed389db03e4a94724cd0a7be5123845136d06198))
+
 ## [0.4.2](https://github.com/HospitalRun/cli/compare/v0.4.1...v0.4.2) (2020-07-01)
 
 
