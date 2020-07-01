@@ -16,7 +16,7 @@
     "clean": "rimraf bin",
     "update": "yarn upgrade-interactive --latest",
     "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\"",
-    "lint:fix": "eslint \"src/**/*.{js,jsx,ts,tsx}\"",
+    "lint:fix": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --fix",
     "test": "cross-env TS_NODE_PROJECT=./test/tsconfig.json tap test/**/*.ts",
     "test:ci": "cross-env TS_NODE_PROJECT=./test/tsconfig.json tap --coverage-report=text-lcov test/**/*.ts > lcov.info",
     "lint-staged": "lint-staged",
