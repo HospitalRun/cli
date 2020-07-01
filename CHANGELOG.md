@@ -1,3 +1,10 @@
+## [0.4.4](https://github.com/HospitalRun/cli/compare/v0.4.3...v0.4.4) (2020-07-01)
+
+
+### Bug Fixes
+
+* **version command:** add correct version to version command ([91fbf11](https://github.com/HospitalRun/cli/commit/91fbf1154453010aa537240fe2a77ad9cb29146e))
+
 ## [0.4.3](https://github.com/HospitalRun/cli/compare/v0.4.2...v0.4.3) (2020-07-01)
 
 
