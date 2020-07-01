@@ -1,3 +1,10 @@
+## [0.4.6](https://github.com/HospitalRun/cli/compare/v0.4.5...v0.4.6) (2020-07-01)
+
+
+### Bug Fixes
+
+* **toolchain:** add fix option to lint:fix script ([1b2f4a7](https://github.com/HospitalRun/cli/commit/1b2f4a7308e58694f331e342da5f921c9be926c2))
+
 ## [0.4.5](https://github.com/HospitalRun/cli/compare/v0.4.4...v0.4.5) (2020-07-01)
 
 
