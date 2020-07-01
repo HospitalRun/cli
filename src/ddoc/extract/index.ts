@@ -8,7 +8,7 @@ export default (prog: Sade) => {
       `Extract design document(s) from database exported backup file. Expects <src> backup file.`,
     )
     .option('-d, --destination', 'Destination folder.', '.')
-    .option('-f, --format', 'Destination file format. Possible values are json or js.', 'json')
+    .option('-f, --format', 'Destination file format. Possible values are json, js and ts.', 'json')
     .example('ddoc extract db/main.txt')
     .example('ddoc extract db/main.txt')
     .action(extract)
