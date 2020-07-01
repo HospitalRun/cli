@@ -5,8 +5,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const sade_1 = __importDefault(require("sade"));
+const version = require('../package.json').version;
 const ddoc_1 = __importDefault(require("./ddoc"));
 const prog = sade_1.default('hospitalrun');
-prog.version('0.1.0');
+prog.version(version);
 ddoc_1.default(prog);
 prog.parse(process.argv);
