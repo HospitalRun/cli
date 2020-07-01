@@ -1,3 +1,10 @@
+## [0.4.5](https://github.com/HospitalRun/cli/compare/v0.4.4...v0.4.5) (2020-07-01)
+
+
+### Bug Fixes
+
+* **help command:** fix output format files ([c159be3](https://github.com/HospitalRun/cli/commit/c159be36654151d33e8dae5239925e7a185a6662))
+
 ## [0.4.4](https://github.com/HospitalRun/cli/compare/v0.4.3...v0.4.4) (2020-07-01)
 
 
