@@ -1,3 +1,10 @@
+## [0.4.1](https://github.com/HospitalRun/cli/compare/v0.4.0...v0.4.1) (2020-07-01)
+
+
+### Bug Fixes
+
+* **deps-dev:** bump @commitlint/cli from 8.3.5 to 9.0.1 ([#72](https://github.com/HospitalRun/cli/issues/72)) ([5474b3c](https://github.com/HospitalRun/cli/commit/5474b3cd48d84c6a9abd065a5203686bef7acb3c))
+
 # [0.4.0](https://github.com/HospitalRun/cli/compare/v0.3.1...v0.4.0) (2020-05-01)
 
 
