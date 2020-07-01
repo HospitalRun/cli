@@ -1,0 +1,15 @@
+{
+  "include": [
+    "./dummy-data/output/main-designs"
+  ],
+  "exclude": [
+    "node_modules"
+  ],
+  "compilerOptions": {
+    "typeRoots": [
+      "../test-typings/design-functions-context.d.ts"
+    ],
+    "outDir": "./dummy-data/designs",
+    "sourceMap": false
+  }
+}

@@ -74,7 +74,7 @@ export default async function build(src: string, opts: { config: string }) {
               return val
             },
             1,
-          )
+          ).replace(/  +/g, ' ')
           await writeFile(path.join(dest, `${filename}.json`), stringifiedDesign)
         } catch (error) {
           errors.push({ file: srcPath, error })

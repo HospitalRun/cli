@@ -1,0 +1,832 @@
+[
+ {
+  "_id": "_design/custom_form_by_type",
+  "_rev": "1-ddf0ee75c1e8e859d821a9f5c1ec43b6",
+  "version": 1,
+  "views": {
+   "custom_form_by_type": {
+    "map": "function(doc) {\n    var doctype, uidx;\n    if (doc._id && (uidx = doc._id.indexOf('_')) > 0 && !doc.data.archived) {\n      doctype = doc._id.substring(0, uidx);\n      if (doctype === 'customForm') {\n        emit(doc.data.formType);\n      }\n    }\n  }"
+   }
+  },
+  "_revisions": {
+   "start": 1,
+   "ids": [
+    "ddf0ee75c1e8e859d821a9f5c1ec43b6"
+   ]
+  }
+ },
+ {
+  "_id": "_design/inventory_by_friendly_id",
+  "_rev": "1-82e24378f074a284cae14da4db5431ed",
+  "version": 1,
+  "views": {
+   "inventory_by_friendly_id": {
+    "map": "function(doc) {\n    var doctype, uidx;\n    if (doc._id && (uidx = doc._id.indexOf('_')) > 0 && !doc.data.archived) {\n      doctype = doc._id.substring(0, uidx);\n      if (doctype === 'inventory') {\n        emit([doc.data.friendlyId, doc._id]);\n      }\n    }\n  }"
+   }
+  },
+  "_revisions": {
+   "start": 1,
+   "ids": [
+    "82e24378f074a284cae14da4db5431ed"
+   ]
+  }
+ },
+ {
+  "_id": "_design/open_incidents_by_user",
+  "_rev": "1-34770efd210920a30c96d3787521e8a5",
+  "version": 1,
+  "views": {
+   "open_incidents_by_user": {
+    "map": "function(doc) {\n    var doctype, uidx;\n    if (doc._id && (uidx = doc._id.indexOf('_')) > 0 && !doc.data.archived) {\n      doctype = doc._id.substring(0, uidx);\n      if (doctype === 'incident') {\n        if (doc.data.status !== \"Closed\") {\n      emit([doc.data.reportedBy, doc._id]);\n    }\n      }\n    }\n  }"
+   }
+  },
+  "lists": {
+   "sort": "function(head, req) {function keysEqual(keyA, keyB) {for (var i= 0; i < keyA.length; i++) {if (keyA[i] !== keyB[i]) {return false;}}return true;}function compareStrings(aString, bString) {if (!aString) {aString = \"\";}if (!bString) {bString = \"\";}if (aString < bString) {return -1;} else if (aString > bString) {return 1;} else {return 0;}}var row,rows=[],startingPosition = 0;while(row = getRow()) {rows.push(row);}rows.sort(function (a, b) {\n      var sortBy = '';\n      if (req.query && req.query.sortKey) {\n        sortBy = req.query.sortKey;\n        return compareStrings(a.doc.data[sortBy], b.doc.data[sortBy]);\n      }\n      return 0; // Don't sort\n    });if (req.query.sortDesc) {rows = rows.reverse();}if (req.query.sortStartKey) {var startKey = JSON.parse(req.query.sortStartKey);for (var i=0; i<rows.length; i++) {if (keysEqual(startKey, rows[i].key)) {startingPosition = i;break;}}}if (req.query.sortLimit) {rows = rows.slice(startingPosition, parseInt(req.query.sortLimit)+startingPosition);} else if (startingPosition > 0) {rows = rows.slice(startingPosition);}send(JSON.stringify({\"rows\" : rows}));}"
+  },
+  "_revisions": {
+   "start": 1,
+   "ids": [
+    "34770efd210920a30c96d3787521e8a5"
+   ]
+  }
+ },
+ {
+  "_id": "_design/incident_by_date",
+  "_rev": "1-59fa59734ee129cff0560b20a95d2d4e",
+  "version": 1,
+  "views": {
+   "incident_by_date": {
+    "map": "function(doc) {\n    var doctype, uidx;\n    if (doc._id && (uidx = doc._id.indexOf('_')) > 0 && !doc.data.archived) {\n      doctype = doc._id.substring(0, uidx);\n      if (doctype === 'incident') {\n        var dateOfIncident = doc.data.dateOfIncident;\n    if (dateOfIncident && dateOfIncident !== \"\") {\n      dateOfIncident = new Date(dateOfIncident);\n      if (dateOfIncident.getTime) {\n        dateOfIncident = dateOfIncident.getTime();\n      }\n    }\n    emit([dateOfIncident, doc._id]);\n      }\n    }\n  }"
+   }
+  },
+  "_revisions": {
+   "start": 1,
+   "ids": [
+    "59fa59734ee129cff0560b20a95d2d4e"
+   ]
+  }
+ },
+ {
+  "_id": "_design/closed_incidents_by_user",
+  "_rev": "1-bf16176c13be57af9a4f1a0980710190",
+  "version": 1,
+  "views": {
+   "closed_incidents_by_user": {
+    "map": "function(doc) {\n    var doctype, uidx;\n    if (doc._id && (uidx = doc._id.indexOf('_')) > 0 && !doc.data.archived) {\n      doctype = doc._id.substring(0, uidx);\n      if (doctype === 'incident') {\n        if (doc.data.status === \"Closed\") {\n      emit([doc.data.reportedBy, doc._id]);\n    }\n      }\n    }\n  }"
+   }
+  },
+  "_revisions": {
+   "start": 1,
+   "ids": [
+    "bf16176c13be57af9a4f1a0980710190"
+   ]
+  }
+ },
+ {
+  "_id": "_design/incident_by_friendly_id",
+  "_rev": "1-885a12b67da47e956bc190fe1fe0d4e6",
+  "version": 1,
+  "views": {
+   "incident_by_friendly_id": {
+    "map": "function(doc) {\n    var doctype, uidx;\n    if (doc._id && (uidx = doc._id.indexOf('_')) > 0 && !doc.data.archived) {\n      doctype = doc._id.substring(0, uidx);\n      if (doctype === 'incident') {\n        emit([doc.data.friendlyId, doc._id]);\n      }\n    }\n  }"
+   }
+  },
+  "_revisions": {
+   "start": 1,
+   "ids": [
+    "885a12b67da47e956bc190fe1fe0d4e6"
+   ]
+  }
+ },
+ {
+  "_id": "_design/invoice_by_patient",
+  "_rev": "1-9f67a58d4e428614844ac82cb2548268",
+  "version": 1,
+  "views": {
+   "invoice_by_patient": {
+    "map": "function(doc) {\n    var doctype, uidx;\n    if (doc._id && (uidx = doc._id.indexOf('_')) > 0 && !doc.data.archived) {\n      doctype = doc._id.substring(0, uidx);\n      if (doctype === 'invoice') {\n        emit(doc.data.patient);\n      }\n    }\n  }"
+   }
+  },
+  "_revisions": {
+   "start": 1,
+   "ids": [
+    "9f67a58d4e428614844ac82cb2548268"
+   ]
+  }
+ },
+ {
+  "_id": "_design/patient_by_admission",
+  "_rev": "1-3c2da4380d257c95ebf4430afa48de3b",
+  "version": 4,
+  "views": {
+   "patient_by_admission": {
+    "map": "function(doc) {\n    var doctype, uidx;\n    if (doc._id && (uidx = doc._id.indexOf('_')) > 0 && !doc.data.archived) {\n      doctype = doc._id.substring(0, uidx);\n      if (doctype === 'patient') {\n        if (doc.data.admitted === true) {\n      if (doc.data.friendlyId) {\n    emit([doc.data.friendlyId, doc._id]);\n  } else if (doc.data.externalPatientId) {\n    emit([doc.data.externalPatientId, doc._id]);\n  } else {\n    emit([doc._id, doc._id]);\n }\n    }\n      }\n    }\n  }"
+   }
+  },
+  "lists": {
+   "sort": "function(head, req) {function keysEqual(keyA, keyB) {for (var i= 0; i < keyA.length; i++) {if (keyA[i] !== keyB[i]) {return false;}}return true;}function getCompareDate(dateString) {if (!dateString || dateString === \"\") {return 0;}return new Date(dateString).getTime();}function compareStrings(aString, bString) {if (!aString) {aString = \"\";}if (!bString) {bString = \"\";}if (aString < bString) {return -1;} else if (aString > bString) {return 1;} else {return 0;}}var row,rows=[],startingPosition = 0;while(row = getRow()) {rows.push(row);}rows.sort(function (a, b) {\n    var sortBy = '';\n    if (req.query && req.query.sortKey) {\n      sortBy = req.query.sortKey;\n    }\n    switch (sortBy) {\n      case 'firstName':\n      case 'sex':\n      case 'lastName':\n      case 'status':\n        {\n          return compareStrings(a.doc.data[sortBy], b.doc.data[sortBy]);\n        }\n      case 'dateOfBirth':\n        {\n          return getCompareDate(a.doc.data.dateOfBirth) - getCompareDate(b.doc.data.dateOfBirth);\n        }\n      default:\n        {\n          return 0; // Don't sort\n        }\n    }\n  });if (req.query.sortDesc) {rows = rows.reverse();}if (req.query.sortStartKey) {var startKey = JSON.parse(req.query.sortStartKey);for (var i=0; i<rows.length; i++) {if (keysEqual(startKey, rows[i].key)) {startingPosition = i;break;}}}if (req.query.sortLimit) {rows = rows.slice(startingPosition, parseInt(req.query.sortLimit)+startingPosition);} else if (startingPosition > 0) {rows = rows.slice(startingPosition);}send(JSON.stringify({\"rows\" : rows}));}"
+  },
+  "_revisions": {
+   "start": 1,
+   "ids": [
+    "3c2da4380d257c95ebf4430afa48de3b"
+   ]
+  }
+ },
+ {
+  "_id": "_design/photo_by_procedure",
+  "_rev": "1-c50f7bfe6146039ab919c51495b14ac7",
+  "version": 1,
+  "views": {
+   "photo_by_procedure": {
+    "map": "function(doc) {\n    var doctype, uidx;\n    if (doc._id && (uidx = doc._id.indexOf('_')) > 0 && !doc.data.archived) {\n      doctype = doc._id.substring(0, uidx);\n      if (doctype === 'photo') {\n        emit(doc.data.procedure);\n      }\n    }\n  }"
+   }
+  },
+  "_revisions": {
+   "start": 1,
+   "ids": [
+    "c50f7bfe6146039ab919c51495b14ac7"
+   ]
+  }
+ },
+ {
+  "_id": "_design/photo_by_visit",
+  "_rev": "1-f2d63b9b96e5fe7eeddecd19f0390a1e",
+  "version": 1,
+  "views": {
+   "photo_by_visit": {
+    "map": "function(doc) {\n    var doctype, uidx;\n    if (doc._id && (uidx = doc._id.indexOf('_')) > 0 && !doc.data.archived) {\n      doctype = doc._id.substring(0, uidx);\n      if (doctype === 'photo') {\n        emit(doc.data.visit);\n      }\n    }\n  }"
+   }
+  },
+  "_revisions": {
+   "start": 1,
+   "ids": [
+    "f2d63b9b96e5fe7eeddecd19f0390a1e"
+   ]
+  }
+ },
+ {
+  "_id": "_design/surgical_appointments_by_date",
+  "_rev": "1-90d8de834de1fe0e154d1cdab8889984",
+  "version": 1,
+  "views": {
+   "surgical_appointments_by_date": {
+    "map": "function(doc) {\n    var doctype, uidx;\n    if (doc._id && (uidx = doc._id.indexOf('_')) > 0 && !doc.data.archived) {\n      doctype = doc._id.substring(0, uidx);\n      if (doctype === 'appointment') {\n        var endDate = doc.data.endDate;\n    if (endDate && endDate !== \"\") {\n      endDate = new Date(endDate);\n      if (endDate.getTime) {\n        endDate = endDate.getTime();\n      }\n    }\n    var startDate = doc.data.startDate;\n    if (startDate && startDate !== \"\") {\n      startDate = new Date(startDate);\n      if (startDate.getTime) {\n        startDate = startDate.getTime();\n      }\n    }\n    if (doc.data.appointmentType === 'Surgery') {\n      emit([startDate, endDate, doc._id]);\n    }\n      }\n    }\n  }"
+   }
+  },
+  "lists": {
+   "sort": "function(head, req) {function keysEqual(keyA, keyB) {for (var i= 0; i < keyA.length; i++) {if (keyA[i] !== keyB[i]) {return false;}}return true;}function getCompareDate(dateString) {if (!dateString || dateString === \"\") {return 0;}return new Date(dateString).getTime();}function compareStrings(aString, bString) {if (!aString) {aString = \"\";}if (!bString) {bString = \"\";}if (aString < bString) {return -1;} else if (aString > bString) {return 1;} else {return 0;}}var row,rows=[],startingPosition = 0;while(row = getRow()) {rows.push(row);}rows = rows.filter(function (row) {\n    var filterBy = null;\n    var includeRow = true;\n    if (req.query && req.query.filterBy) {\n      filterBy = JSON.parse(req.query.filterBy);\n    }\n    if (!filterBy) {\n      return true;\n    }\n    for (var i = 0; i < filterBy.length; i++) {\n      var currentValue = row.doc.data[filterBy[i].name];\n      if (filterBy[i].name === 'status' && (!currentValue || currentValue === '')) {\n        currentValue = 'Scheduled';\n      }\n      if (currentValue !== filterBy[i].value) {\n        includeRow = false;\n        break;\n      }\n    }\n    return includeRow;\n  });rows.sort(function (a, b) {\n    function defaultStatus(value) {\n      if (!value || value === '') {\n        return 'Scheduled';\n      } else {\n        return value;\n      }\n    }\n    var sortBy = '';\n    if (req.query && req.query.sortKey) {\n      sortBy = req.query.sortKey;\n    }\n    switch (sortBy) {\n      case 'appointmentType':\n      case 'location':\n      case 'provider':\n        return compareStrings(a.doc.data[sortBy], b.doc.data[sortBy]);\n      case 'date':\n        {\n          var startDiff = getCompareDate(a.doc.data.startDate) - getCompareDate(b.doc.data.startDate);\n          if (startDiff === 0) {\n            return getCompareDate(a.doc.data.endDate) - getCompareDate(b.doc.data.endDate);\n          } else {\n            return startDiff;\n          }\n        }\n      case 'status':\n        {\n          var aStatus = defaultStatus(a.doc.data[sortBy]);\n          var bStatus = defaultStatus(b.doc.data[sortBy]);\n          return compareStrings(aStatus, bStatus);\n        }\n      default:\n        {\n          return 0; // Don't sort\n        }\n    }\n  });if (req.query.sortDesc) {rows = rows.reverse();}if (req.query.sortStartKey) {var startKey = JSON.parse(req.query.sortStartKey);for (var i=0; i<rows.length; i++) {if (keysEqual(startKey, rows[i].key)) {startingPosition = i;break;}}}if (req.query.sortLimit) {rows = rows.slice(startingPosition, parseInt(req.query.sortLimit)+startingPosition);} else if (startingPosition > 0) {rows = rows.slice(startingPosition);}send(JSON.stringify({\"rows\" : rows}));}"
+  },
+  "_revisions": {
+   "start": 1,
+   "ids": [
+    "90d8de834de1fe0e154d1cdab8889984"
+   ]
+  }
+ },
+ {
+  "_id": "_design/report_by_visit",
+  "_rev": "1-1295cef10df82554859efdb4c38c1c1e",
+  "version": 1,
+  "views": {
+   "report_by_visit": {
+    "map": "function(doc) {\n    var doctype, uidx;\n    if (doc._id && (uidx = doc._id.indexOf('_')) > 0 && !doc.data.archived) {\n      doctype = doc._id.substring(0, uidx);\n      if (doctype === 'report') {\n        emit(doc.data.visit);\n      }\n    }\n  }"
+   }
+  },
+  "_revisions": {
+   "start": 1,
+   "ids": [
+    "1295cef10df82554859efdb4c38c1c1e"
+   ]
+  }
+ },
+ {
+  "_id": "_design/appointments_by_date",
+  "_rev": "1-5df29f1d7dbd39d6b3a2145923ab73cf",
+  "version": 7,
+  "views": {
+   "appointments_by_date": {
+    "map": "function(doc) {\n    var doctype, uidx;\n    if (doc._id && (uidx = doc._id.indexOf('_')) > 0 && !doc.data.archived) {\n      doctype = doc._id.substring(0, uidx);\n      if (doctype === 'appointment') {\n        var endDate = doc.data.endDate;\n    if (endDate && endDate !== \"\") {\n      endDate = new Date(endDate);\n      if (endDate.getTime) {\n        endDate = endDate.getTime();\n      }\n    }\n    var startDate = doc.data.startDate;\n    if (startDate && startDate !== \"\") {\n      startDate = new Date(startDate);\n      if (startDate.getTime) {\n        startDate = startDate.getTime();\n      }\n    }\n    if (doc.data.appointmentType !== 'Surgery') {\n      emit([startDate, endDate, doc._id]);\n    }\n      }\n    }\n  }"
+   }
+  },
+  "lists": {
+   "sort": "function(head, req) {function keysEqual(keyA, keyB) {for (var i= 0; i < keyA.length; i++) {if (keyA[i] !== keyB[i]) {return false;}}return true;}function getCompareDate(dateString) {if (!dateString || dateString === \"\") {return 0;}return new Date(dateString).getTime();}function compareStrings(aString, bString) {if (!aString) {aString = \"\";}if (!bString) {bString = \"\";}if (aString < bString) {return -1;} else if (aString > bString) {return 1;} else {return 0;}}var row,rows=[],startingPosition = 0;while(row = getRow()) {rows.push(row);}rows = rows.filter(function (row) {\n    var filterBy = null;\n    var includeRow = true;\n    if (req.query && req.query.filterBy) {\n      filterBy = JSON.parse(req.query.filterBy);\n    }\n    if (!filterBy) {\n      return true;\n    }\n    for (var i = 0; i < filterBy.length; i++) {\n      var currentValue = row.doc.data[filterBy[i].name];\n      if (filterBy[i].name === 'status' && (!currentValue || currentValue === '')) {\n        currentValue = 'Scheduled';\n      }\n      if (currentValue !== filterBy[i].value) {\n        includeRow = false;\n        break;\n      }\n    }\n    return includeRow;\n  });rows.sort(function (a, b) {\n    function defaultStatus(value) {\n      if (!value || value === '') {\n        return 'Scheduled';\n      } else {\n        return value;\n      }\n    }\n    var sortBy = '';\n    if (req.query && req.query.sortKey) {\n      sortBy = req.query.sortKey;\n    }\n    switch (sortBy) {\n      case 'appointmentType':\n      case 'location':\n      case 'provider':\n        return compareStrings(a.doc.data[sortBy], b.doc.data[sortBy]);\n      case 'date':\n        {\n          var startDiff = getCompareDate(a.doc.data.startDate) - getCompareDate(b.doc.data.startDate);\n          if (startDiff === 0) {\n            return getCompareDate(a.doc.data.endDate) - getCompareDate(b.doc.data.endDate);\n          } else {\n            return startDiff;\n          }\n        }\n      case 'status':\n        {\n          var aStatus = defaultStatus(a.doc.data[sortBy]);\n          var bStatus = defaultStatus(b.doc.data[sortBy]);\n          return compareStrings(aStatus, bStatus);\n        }\n      default:\n        {\n          return 0; // Don't sort\n        }\n    }\n  });if (req.query.sortDesc) {rows = rows.reverse();}if (req.query.sortStartKey) {var startKey = JSON.parse(req.query.sortStartKey);for (var i=0; i<rows.length; i++) {if (keysEqual(startKey, rows[i].key)) {startingPosition = i;break;}}}if (req.query.sortLimit) {rows = rows.slice(startingPosition, parseInt(req.query.sortLimit)+startingPosition);} else if (startingPosition > 0) {rows = rows.slice(startingPosition);}send(JSON.stringify({\"rows\" : rows}));}"
+  },
+  "_revisions": {
+   "start": 1,
+   "ids": [
+    "5df29f1d7dbd39d6b3a2145923ab73cf"
+   ]
+  }
+ },
+ {
+  "_id": "_design/appointments_by_date",
+  "_rev": "2-1fc384eae57485ff9100c0614780ab62",
+  "_deleted": true,
+  "_revisions": {
+   "start": 2,
+   "ids": [
+    "1fc384eae57485ff9100c0614780ab62",
+    "03951858f9232df2e774548b0f5fd068"
+   ]
+  }
+ },
+ {
+  "_id": "_design/appointments_by_patient",
+  "_rev": "1-9a97acd5b8fd071ad81afc9e730721c5",
+  "version": 4,
+  "views": {
+   "appointments_by_patient": {
+    "map": "function(doc) {\n    var doctype, uidx;\n    if (doc._id && (uidx = doc._id.indexOf('_')) > 0 && !doc.data.archived) {\n      doctype = doc._id.substring(0, uidx);\n      if (doctype === 'appointment') {\n        var endDate = doc.data.endDate;\n    if (endDate && endDate !== \"\") {\n      endDate = new Date(endDate);\n      if (endDate.getTime) {\n        endDate = endDate.getTime();\n      }\n    }\n    var startDate = doc.data.startDate;\n    if (startDate && startDate !== \"\") {\n      startDate = new Date(startDate);\n      if (startDate.getTime) {\n        startDate = startDate.getTime();\n      }\n    }\n    emit([doc.data.patient, startDate, endDate,doc._id]);\n      }\n    }\n  }"
+   }
+  },
+  "_revisions": {
+   "start": 1,
+   "ids": [
+    "9a97acd5b8fd071ad81afc9e730721c5"
+   ]
+  }
+ },
+ {
+  "_id": "_design/appointments_by_patient",
+  "_rev": "2-b07bbda1569b8575e3fb3f118584c0c2",
+  "_deleted": true,
+  "_revisions": {
+   "start": 2,
+   "ids": [
+    "b07bbda1569b8575e3fb3f118584c0c2",
+    "9868b6586898a48c3fd68722ca3fe1d4"
+   ]
+  }
+ },
+ {
+  "_id": "_design/inventory_by_type",
+  "_rev": "1-18455500e1e86544edceaab01bb511bc",
+  "version": 5,
+  "views": {
+   "inventory_by_type": {
+    "map": "function(doc) {\n    var doctype, uidx;\n    if (doc._id && (uidx = doc._id.indexOf('_')) > 0 && !doc.data.archived) {\n      doctype = doc._id.substring(0, uidx);\n      if (doctype === 'inventory') {\n        emit(doc.data.inventoryType);\n      }\n    }\n  }"
+   }
+  },
+  "_revisions": {
+   "start": 1,
+   "ids": [
+    "18455500e1e86544edceaab01bb511bc"
+   ]
+  }
+ },
+ {
+  "_id": "_design/inventory_by_type",
+  "_rev": "2-2f0df4e3dc8ba6d384f896efd4a272cf",
+  "_deleted": true,
+  "_revisions": {
+   "start": 2,
+   "ids": [
+    "2f0df4e3dc8ba6d384f896efd4a272cf",
+    "003ef699ab0f2b8628c0bf613fabf7a2"
+   ]
+  }
+ },
+ {
+  "_id": "_design/inventory_by_name",
+  "_rev": "1-91f55ae6bd30f766d9da95bffe054bcb",
+  "version": 5,
+  "views": {
+   "inventory_by_name": {
+    "map": "function(doc) {\n    var doctype, uidx;\n    if (doc._id && (uidx = doc._id.indexOf('_')) > 0 && !doc.data.archived) {\n      doctype = doc._id.substring(0, uidx);\n      if (doctype === 'inventory') {\n        emit([doc.data.name, doc._id]);\n      }\n    }\n  }"
+   }
+  },
+  "lists": {
+   "sort": "function(head, req) {function keysEqual(keyA, keyB) {for (var i= 0; i < keyA.length; i++) {if (keyA[i] !== keyB[i]) {return false;}}return true;}function compareStrings(aString, bString) {if (!aString) {aString = \"\";}if (!bString) {bString = \"\";}if (aString < bString) {return -1;} else if (aString > bString) {return 1;} else {return 0;}}var row,rows=[],startingPosition = 0;while(row = getRow()) {rows.push(row);}rows.sort(function (a, b) {\n      var sortBy = '';\n      if (req.query && req.query.sortKey) {\n        sortBy = req.query.sortKey;\n      }\n      switch (sortBy) {\n        case 'crossReference':\n        case 'description':\n        case 'friendlyId':\n        case 'name':\n        case 'price':\n        case 'quantity':\n        case 'inventoryType':\n          {\n            return compareStrings(a.doc.data[sortBy], b.doc.data[sortBy]);\n          }\n        default:\n          {\n            return 0; // Don't sort\n          }\n      }\n    });if (req.query.sortDesc) {rows = rows.reverse();}if (req.query.sortStartKey) {var startKey = JSON.parse(req.query.sortStartKey);for (var i=0; i<rows.length; i++) {if (keysEqual(startKey, rows[i].key)) {startingPosition = i;break;}}}if (req.query.sortLimit) {rows = rows.slice(startingPosition, parseInt(req.query.sortLimit)+startingPosition);} else if (startingPosition > 0) {rows = rows.slice(startingPosition);}send(JSON.stringify({\"rows\" : rows}));}"
+  },
+  "_revisions": {
+   "start": 1,
+   "ids": [
+    "91f55ae6bd30f766d9da95bffe054bcb"
+   ]
+  }
+ },
+ {
+  "_id": "_design/inventory_by_name",
+  "_rev": "2-6970ab89b44af8c2703a89d6dea9b20b",
+  "_deleted": true,
+  "_revisions": {
+   "start": 2,
+   "ids": [
+    "6970ab89b44af8c2703a89d6dea9b20b",
+    "304304d63beaffd8d1ae4ae1cddf4b2b"
+   ]
+  }
+ },
+ {
+  "_id": "_design/inventory_purchase_by_expiration_date",
+  "_rev": "1-1f41dd6d030c58884d7013ef9436decb",
+  "version": 5,
+  "views": {
+   "inventory_purchase_by_expiration_date": {
+    "map": "function(doc) {\n    var doctype, uidx;\n    if (doc._id && (uidx = doc._id.indexOf('_')) > 0 && !doc.data.archived) {\n      doctype = doc._id.substring(0, uidx);\n      if (doctype === 'invPurchase') {\n        var expirationDate = doc.data.expirationDate;\n    if (expirationDate && expirationDate !== \"\") {\n      expirationDate = new Date(expirationDate);\n      if (expirationDate.getTime) {\n        expirationDate = expirationDate.getTime();\n      }\n    }\n    emit([expirationDate, doc._id]);\n      }\n    }\n  }"
+   }
+  },
+  "_revisions": {
+   "start": 1,
+   "ids": [
+    "1f41dd6d030c58884d7013ef9436decb"
+   ]
+  }
+ },
+ {
+  "_id": "_design/inventory_purchase_by_expiration_date",
+  "_rev": "2-d900cddd5fcc673d77fbd2f6d783475d",
+  "_deleted": true,
+  "_revisions": {
+   "start": 2,
+   "ids": [
+    "d900cddd5fcc673d77fbd2f6d783475d",
+    "17bd9d3619ae03155d9929d3ebcd5023"
+   ]
+  }
+ },
+ {
+  "_id": "_design/inventory_request_by_status",
+  "_rev": "1-cc0c1e0e01060aa62456d6ea768d8ec7",
+  "version": 5,
+  "views": {
+   "inventory_request_by_status": {
+    "map": "function(doc) {\n    var doctype, uidx;\n    if (doc._id && (uidx = doc._id.indexOf('_')) > 0 && !doc.data.archived) {\n      doctype = doc._id.substring(0, uidx);\n      if (doctype === 'invRequest') {\n        var dateCompleted = doc.data.dateCompleted;\n    if (dateCompleted && dateCompleted !== \"\") {\n      dateCompleted = new Date(dateCompleted);\n      if (dateCompleted.getTime) {\n        dateCompleted = dateCompleted.getTime();\n      }\n    }\n    emit([doc.data.status, dateCompleted, doc._id]);\n      }\n    }\n  }"
+   }
+  },
+  "_revisions": {
+   "start": 1,
+   "ids": [
+    "cc0c1e0e01060aa62456d6ea768d8ec7"
+   ]
+  }
+ },
+ {
+  "_id": "_design/inventory_request_by_status",
+  "_rev": "2-0338b756f9c3471052577cadc4ed9505",
+  "_deleted": true,
+  "_revisions": {
+   "start": 2,
+   "ids": [
+    "0338b756f9c3471052577cadc4ed9505",
+    "187394c79d3206e11e112891f0d63550"
+   ]
+  }
+ },
+ {
+  "_id": "_design/invoice_by_status",
+  "_rev": "1-d411e6f66f897f0b9b985dc6e5188d85",
+  "version": 4,
+  "views": {
+   "invoice_by_status": {
+    "map": "function(doc) {\n    var doctype, uidx;\n    if (doc._id && (uidx = doc._id.indexOf('_')) > 0 && !doc.data.archived) {\n      doctype = doc._id.substring(0, uidx);\n      if (doctype === 'invoice') {\n        var billDate = doc.data.billDate;\n    if (billDate && billDate !== \"\") {\n      billDate = new Date(billDate);\n      if (billDate.getTime) {\n        billDate = billDate.getTime();\n      }\n    }\n    emit([doc.data.status, billDate, doc._id]);\n      }\n    }\n  }"
+   }
+  },
+  "_revisions": {
+   "start": 1,
+   "ids": [
+    "d411e6f66f897f0b9b985dc6e5188d85"
+   ]
+  }
+ },
+ {
+  "_id": "_design/invoice_by_status",
+  "_rev": "2-cda5e78ae504f4aaf101cc43d434d5ab",
+  "_deleted": true,
+  "_revisions": {
+   "start": 2,
+   "ids": [
+    "cda5e78ae504f4aaf101cc43d434d5ab",
+    "73e3e45673ed0c4f4ae1cee855f216f0"
+   ]
+  }
+ },
+ {
+  "_id": "_design/medication_by_status",
+  "_rev": "1-a6403c53b2db46905b3b1861120c6601",
+  "version": 4,
+  "views": {
+   "medication_by_status": {
+    "map": "function(doc) {\n    var doctype, uidx;\n    if (doc._id && (uidx = doc._id.indexOf('_')) > 0 && !doc.data.archived) {\n      doctype = doc._id.substring(0, uidx);\n      if (doctype === 'medication') {\n        var prescriptionDate = doc.data.prescriptionDate;\n    if (prescriptionDate && prescriptionDate !== \"\") {\n      prescriptionDate = new Date(prescriptionDate);\n      if (prescriptionDate.getTime) {\n        prescriptionDate = prescriptionDate.getTime();\n      }\n    }\n    var requestedDate = doc.data.requestedDate;\n    if (requestedDate && requestedDate !== \"\") {\n      requestedDate = new Date(requestedDate);\n      if (requestedDate.getTime) {\n        requestedDate = requestedDate.getTime();\n      }\n    }\n    emit([doc.data.status, requestedDate, prescriptionDate, doc._id]);\n      }\n    }\n  }"
+   }
+  },
+  "_revisions": {
+   "start": 1,
+   "ids": [
+    "a6403c53b2db46905b3b1861120c6601"
+   ]
+  }
+ },
+ {
+  "_id": "_design/medication_by_status",
+  "_rev": "2-7949d287e31bd3487aa205ae3b23a352",
+  "_deleted": true,
+  "_revisions": {
+   "start": 2,
+   "ids": [
+    "7949d287e31bd3487aa205ae3b23a352",
+    "36ce9e9853552f5eb646ed26de7184dc"
+   ]
+  }
+ },
+ {
+  "_id": "_design/patient_by_display_id",
+  "_rev": "1-8a6930002af6d588ecdedd5f07da0230",
+  "version": 7,
+  "views": {
+   "patient_by_display_id": {
+    "map": "function(doc) {\n    var doctype, uidx;\n    if (doc._id && (uidx = doc._id.indexOf('_')) > 0 && !doc.data.archived) {\n      doctype = doc._id.substring(0, uidx);\n      if (doctype === 'patient') {\n        if (doc.data.friendlyId) {\n    emit([doc.data.friendlyId, doc._id]);\n  } else if (doc.data.externalPatientId) {\n    emit([doc.data.externalPatientId, doc._id]);\n  } else {\n    emit([doc._id, doc._id]);\n }\n      }\n    }\n  }"
+   }
+  },
+  "lists": {
+   "sort": "function(head, req) {function keysEqual(keyA, keyB) {for (var i= 0; i < keyA.length; i++) {if (keyA[i] !== keyB[i]) {return false;}}return true;}function getCompareDate(dateString) {if (!dateString || dateString === \"\") {return 0;}return new Date(dateString).getTime();}function compareStrings(aString, bString) {if (!aString) {aString = \"\";}if (!bString) {bString = \"\";}if (aString < bString) {return -1;} else if (aString > bString) {return 1;} else {return 0;}}var row,rows=[],startingPosition = 0;while(row = getRow()) {rows.push(row);}rows.sort(function (a, b) {\n    var sortBy = '';\n    if (req.query && req.query.sortKey) {\n      sortBy = req.query.sortKey;\n    }\n    switch (sortBy) {\n      case 'firstName':\n      case 'sex':\n      case 'lastName':\n      case 'status':\n        {\n          return compareStrings(a.doc.data[sortBy], b.doc.data[sortBy]);\n        }\n      case 'dateOfBirth':\n        {\n          return getCompareDate(a.doc.data.dateOfBirth) - getCompareDate(b.doc.data.dateOfBirth);\n        }\n      default:\n        {\n          return 0; // Don't sort\n        }\n    }\n  });if (req.query.sortDesc) {rows = rows.reverse();}if (req.query.sortStartKey) {var startKey = JSON.parse(req.query.sortStartKey);for (var i=0; i<rows.length; i++) {if (keysEqual(startKey, rows[i].key)) {startingPosition = i;break;}}}if (req.query.sortLimit) {rows = rows.slice(startingPosition, parseInt(req.query.sortLimit)+startingPosition);} else if (startingPosition > 0) {rows = rows.slice(startingPosition);}send(JSON.stringify({\"rows\" : rows}));}"
+  },
+  "_revisions": {
+   "start": 1,
+   "ids": [
+    "8a6930002af6d588ecdedd5f07da0230"
+   ]
+  }
+ },
+ {
+  "_id": "_design/patient_by_display_id",
+  "_rev": "2-04967bcb87fd6a7fffc0d779044dd0b8",
+  "_deleted": true,
+  "_revisions": {
+   "start": 2,
+   "ids": [
+    "04967bcb87fd6a7fffc0d779044dd0b8",
+    "6f596cec9eb82609308fd9d25a9f9df2"
+   ]
+  }
+ },
+ {
+  "_id": "_design/patient_by_display_id",
+  "_rev": "2-eae82996b36349ac1fce13b33546eaec",
+  "_deleted": true,
+  "_revisions": {
+   "start": 2,
+   "ids": [
+    "eae82996b36349ac1fce13b33546eaec",
+    "0b75ee7c82a1aadebd0bc0fd403622fb"
+   ]
+  }
+ },
+ {
+  "_id": "_design/pricing_by_category",
+  "_rev": "1-3d703b5f240ae5838d1f20a8ad0471de",
+  "version": 5,
+  "views": {
+   "pricing_by_category": {
+    "map": "function(doc) {\n    var doctype, uidx;\n    if (doc._id && (uidx = doc._id.indexOf('_')) > 0 && !doc.data.archived) {\n      doctype = doc._id.substring(0, uidx);\n      if (doctype === 'pricing') {\n        emit([doc.data.category, doc.data.name, doc.data.pricingType, doc._id]);\n      }\n    }\n  }"
+   }
+  },
+  "_revisions": {
+   "start": 1,
+   "ids": [
+    "3d703b5f240ae5838d1f20a8ad0471de"
+   ]
+  }
+ },
+ {
+  "_id": "_design/pricing_by_category",
+  "_rev": "2-68d447e856a6194de82dcd9e506569ae",
+  "_deleted": true,
+  "_revisions": {
+   "start": 2,
+   "ids": [
+    "68d447e856a6194de82dcd9e506569ae",
+    "23d44e44019170eadd086734c87e3976"
+   ]
+  }
+ },
+ {
+  "_id": "_design/procedure_by_date",
+  "_rev": "1-a44decd8f14d01c615cf3f5b8e70f10b",
+  "version": 4,
+  "views": {
+   "procedure_by_date": {
+    "map": "function(doc) {\n    var doctype, uidx;\n    if (doc._id && (uidx = doc._id.indexOf('_')) > 0 && !doc.data.archived) {\n      doctype = doc._id.substring(0, uidx);\n      if (doctype === 'procedure') {\n        var procedureDate = doc.data.procedureDate;\n    if (procedureDate && procedureDate !== \"\") {\n      procedureDate = new Date(procedureDate);\n      if (procedureDate.getTime) {\n        procedureDate = procedureDate.getTime();\n      }\n    }\n    emit([procedureDate, doc._id]);\n      }\n    }\n  }"
+   }
+  },
+  "_revisions": {
+   "start": 1,
+   "ids": [
+    "a44decd8f14d01c615cf3f5b8e70f10b"
+   ]
+  }
+ },
+ {
+  "_id": "_design/procedure_by_date",
+  "_rev": "2-5b5eb6c8ca33d0d3ff9c1f6ee70eb04c",
+  "_deleted": true,
+  "_revisions": {
+   "start": 2,
+   "ids": [
+    "5b5eb6c8ca33d0d3ff9c1f6ee70eb04c",
+    "25ccef2a9dff3addd8c0d15cc79c363c"
+   ]
+  }
+ },
+ {
+  "_id": "_design/visit_by_date",
+  "_rev": "1-db61f993a1e1699c8205fee3434fc4c8",
+  "version": 4,
+  "views": {
+   "visit_by_date": {
+    "map": "function(doc) {\n    var doctype, uidx;\n    if (doc._id && (uidx = doc._id.indexOf('_')) > 0 && !doc.data.archived) {\n      doctype = doc._id.substring(0, uidx);\n      if (doctype === 'visit') {\n        var endDate = doc.data.endDate;\n    if (endDate && endDate !== \"\") {\n      endDate = new Date(endDate);\n      if (endDate.getTime) {\n        endDate = endDate.getTime();\n      }\n    }\n    var startDate = doc.data.startDate;\n    if (startDate && startDate !== \"\") {\n      startDate = new Date(startDate);\n      if (startDate.getTime) {\n        startDate = startDate.getTime();\n      }\n    }\n    emit([startDate, endDate, doc._id]);\n      }\n    }\n  }"
+   }
+  },
+  "_revisions": {
+   "start": 1,
+   "ids": [
+    "db61f993a1e1699c8205fee3434fc4c8"
+   ]
+  }
+ },
+ {
+  "_id": "_design/visit_by_date",
+  "_rev": "2-add6c18db9db449d2af501f6f3fc9a68",
+  "_deleted": true,
+  "_revisions": {
+   "start": 2,
+   "ids": [
+    "add6c18db9db449d2af501f6f3fc9a68",
+    "367a7fa42f1067f645190d560f83ef5e"
+   ]
+  }
+ },
+ {
+  "_id": "_design/visit_by_patient",
+  "_rev": "1-f2865c74eefee716937492db914f2ccd",
+  "version": 4,
+  "views": {
+   "visit_by_patient": {
+    "map": "function(doc) {\n    var doctype, uidx;\n    if (doc._id && (uidx = doc._id.indexOf('_')) > 0 && !doc.data.archived) {\n      doctype = doc._id.substring(0, uidx);\n      if (doctype === 'visit') {\n        var endDate = doc.data.endDate;\n    if (endDate && endDate !== \"\") {\n      endDate = new Date(endDate);\n      if (endDate.getTime) {\n        endDate = endDate.getTime();\n      }\n    }\n    var startDate = doc.data.startDate;\n    if (startDate && startDate !== \"\") {\n      startDate = new Date(startDate);\n      if (startDate.getTime) {\n        startDate = startDate.getTime();\n      }\n    }\n    emit([doc.data.patient, startDate, endDate, doc.data.visitType, doc._id]);\n      }\n    }\n  }"
+   }
+  },
+  "_revisions": {
+   "start": 1,
+   "ids": [
+    "f2865c74eefee716937492db914f2ccd"
+   ]
+  }
+ },
+ {
+  "_id": "_design/visit_by_patient",
+  "_rev": "2-048bd179b127054d3279071160a6f314",
+  "_deleted": true,
+  "_revisions": {
+   "start": 2,
+   "ids": [
+    "048bd179b127054d3279071160a6f314",
+    "412252178488867e2350dcd13da779ea"
+   ]
+  }
+ },
+ {
+  "_id": "_design/imaging_by_status",
+  "_rev": "2-108fd4946bffc2b0cb37a486ba7f2762",
+  "version": 4,
+  "views": {
+   "imaging_by_status": {
+    "map": "function(doc) {\n    var doctype, uidx;\n    if (doc._id && (uidx = doc._id.indexOf('_')) > 0 && !doc.data.archived) {\n      doctype = doc._id.substring(0, uidx);\n      if (doctype === 'imaging') {\n        var imagingDate = doc.data.imagingDate;\n    if (imagingDate && imagingDate !== \"\") {\n      imagingDate = new Date(imagingDate);\n      if (imagingDate.getTime) {\n        imagingDate = imagingDate.getTime();\n      }\n    }\n    var requestedDate = doc.data.requestedDate;\n    if (requestedDate && requestedDate !== \"\") {\n      requestedDate = new Date(requestedDate);\n      if (requestedDate.getTime) {\n        requestedDate = requestedDate.getTime();\n      }\n    }\n    emit([doc.data.status, requestedDate, imagingDate, doc._id]);\n      }\n    }\n  }"
+   }
+  },
+  "_revisions": {
+   "start": 2,
+   "ids": [
+    "108fd4946bffc2b0cb37a486ba7f2762",
+    "9236042e1fb9f567d1d527bbb429cd8e"
+   ]
+  }
+ },
+ {
+  "_id": "_design/imaging_by_status",
+  "_rev": "2-c13cdf46b0ada4601e71c65353dae3df",
+  "_deleted": true,
+  "_revisions": {
+   "start": 2,
+   "ids": [
+    "c13cdf46b0ada4601e71c65353dae3df",
+    "1a3bab3d2d1403299a9e4ad8dffe5fa1"
+   ]
+  }
+ },
+ {
+  "_id": "_design/inventory_purchase_by_date_received",
+  "_rev": "2-c2c04fc8d8a6e72bbf8cae75850fb7c6",
+  "version": 5,
+  "views": {
+   "inventory_purchase_by_date_received": {
+    "map": "function(doc) {\n    var doctype, uidx;\n    if (doc._id && (uidx = doc._id.indexOf('_')) > 0 && !doc.data.archived) {\n      doctype = doc._id.substring(0, uidx);\n      if (doctype === 'invPurchase') {\n        var dateReceived = doc.data.dateReceived;\n    if (dateReceived && dateReceived !== \"\") {\n      dateReceived = new Date(dateReceived);\n      if (dateReceived.getTime) {\n        dateReceived = dateReceived.getTime();\n      }\n    }\n    emit([dateReceived, doc._id]);\n      }\n    }\n  }"
+   }
+  },
+  "_revisions": {
+   "start": 2,
+   "ids": [
+    "c2c04fc8d8a6e72bbf8cae75850fb7c6",
+    "78939ec45bef330bbfa87763dbbfce37"
+   ]
+  }
+ },
+ {
+  "_id": "_design/inventory_purchase_by_date_received",
+  "_rev": "2-392c104e0d9eac6f20948f0d97dd192d",
+  "_deleted": true,
+  "_revisions": {
+   "start": 2,
+   "ids": [
+    "392c104e0d9eac6f20948f0d97dd192d",
+    "0d7b597aeae746589980b12903768252"
+   ]
+  }
+ },
+ {
+  "_id": "_design/inventory_request_by_item",
+  "_rev": "2-3e60bfa1c63aad403716f2ab26c00980",
+  "version": 5,
+  "views": {
+   "inventory_request_by_item": {
+    "map": "function(doc) {\n    var doctype, uidx;\n    if (doc._id && (uidx = doc._id.indexOf('_')) > 0 && !doc.data.archived) {\n      doctype = doc._id.substring(0, uidx);\n      if (doctype === 'invRequest') {\n        var dateCompleted = doc.data.dateCompleted;\n    if (dateCompleted && dateCompleted !== \"\") {\n      dateCompleted = new Date(dateCompleted);\n      if (dateCompleted.getTime) {\n        dateCompleted = dateCompleted.getTime();\n      }\n    }\n    emit([doc.data.inventoryItem, doc.data.status, dateCompleted]);\n      }\n    }\n  }"
+   }
+  },
+  "_revisions": {
+   "start": 2,
+   "ids": [
+    "3e60bfa1c63aad403716f2ab26c00980",
+    "7e7ef275a9fc15f2b5f328b1479c6097"
+   ]
+  }
+ },
+ {
+  "_id": "_design/inventory_request_by_item",
+  "_rev": "2-81a90ac8fc850741d7f64b4fbd9df7e0",
+  "_deleted": true,
+  "_revisions": {
+   "start": 2,
+   "ids": [
+    "81a90ac8fc850741d7f64b4fbd9df7e0",
+    "021f4c24b5b6202594f610cf5d4c63a4"
+   ]
+  }
+ },
+ {
+  "_id": "_design/lab_by_status",
+  "_rev": "2-e32c3b41865288a55b55b90a7bb9f308",
+  "version": 4,
+  "views": {
+   "lab_by_status": {
+    "map": "function(doc) {\n    var doctype, uidx;\n    if (doc._id && (uidx = doc._id.indexOf('_')) > 0 && !doc.data.archived) {\n      doctype = doc._id.substring(0, uidx);\n      if (doctype === 'lab') {\n        var labDate = doc.data.labDate;\n    if (labDate && labDate !== \"\") {\n      labDate = new Date(labDate);\n      if (labDate.getTime) {\n        labDate = labDate.getTime();\n      }\n    }\n    var requestedDate = doc.data.requestedDate;\n    if (requestedDate && requestedDate !== \"\") {\n      requestedDate = new Date(requestedDate);\n      if (requestedDate.getTime) {\n        requestedDate = requestedDate.getTime();\n      }\n    }\n    emit([doc.data.status, requestedDate, labDate, doc._id]);\n      }\n    }\n  }"
+   }
+  },
+  "_revisions": {
+   "start": 2,
+   "ids": [
+    "e32c3b41865288a55b55b90a7bb9f308",
+    "db4393c6856b98a40afd6ceef31db2a7"
+   ]
+  }
+ },
+ {
+  "_id": "_design/lab_by_status",
+  "_rev": "2-a3e2e3df161e7880986b81f873a974d5",
+  "_deleted": true,
+  "_revisions": {
+   "start": 2,
+   "ids": [
+    "a3e2e3df161e7880986b81f873a974d5",
+    "7d4de6e219b482171b7ecd485ef72238"
+   ]
+  }
+ },
+ {
+  "_id": "_design/patient_by_status",
+  "_rev": "2-2f25b106bfe0630eea9e9673ccdb5ce2",
+  "version": 3,
+  "views": {
+   "patient_by_status": {
+    "map": "function(doc) {\n    var doctype, uidx;\n    if (doc._id && (uidx = doc._id.indexOf('_')) > 0 && !doc.data.archived) {\n      doctype = doc._id.substring(0, uidx);\n      if (doctype === 'patient') {\n        emit(doc.data.status);\n      }\n    }\n  }"
+   }
+  },
+  "_revisions": {
+   "start": 2,
+   "ids": [
+    "2f25b106bfe0630eea9e9673ccdb5ce2",
+    "ff26a12cdb8747aae5bf26f9af3a1953"
+   ]
+  }
+ },
+ {
+  "_id": "_design/patient_by_status",
+  "_rev": "2-01f23790dd42e69b4ed27f04d61f1adf",
+  "_deleted": true,
+  "_revisions": {
+   "start": 2,
+   "ids": [
+    "01f23790dd42e69b4ed27f04d61f1adf",
+    "54bc74ff93db4aedff83bc649f766596"
+   ]
+  }
+ },
+ {
+  "_id": "_design/photo_by_patient",
+  "_rev": "2-f26401b0aab09f2c2b28af43759a1ce4",
+  "version": 4,
+  "views": {
+   "photo_by_patient": {
+    "map": "function(doc) {\n    var doctype, uidx;\n    if (doc._id && (uidx = doc._id.indexOf('_')) > 0 && !doc.data.archived) {\n      doctype = doc._id.substring(0, uidx);\n      if (doctype === 'photo') {\n        emit(doc.data.patient);\n      }\n    }\n  }"
+   }
+  },
+  "_revisions": {
+   "start": 2,
+   "ids": [
+    "f26401b0aab09f2c2b28af43759a1ce4",
+    "e3dc5506f7f370535b85be0adc59c7cc"
+   ]
+  }
+ },
+ {
+  "_id": "_design/photo_by_patient",
+  "_rev": "2-5fc163e6b59fe7fe49ea0d0b07f5b78c",
+  "_deleted": true,
+  "_revisions": {
+   "start": 2,
+   "ids": [
+    "5fc163e6b59fe7fe49ea0d0b07f5b78c",
+    "6a4fad4fa682efbbd058e858c328574f"
+   ]
+  }
+ },
+ {
+  "_id": "_design/sequence_by_prefix",
+  "_rev": "2-1eebd1c656e6f2fe91d9facff099c54f",
+  "version": 4,
+  "views": {
+   "sequence_by_prefix": {
+    "map": "function(doc) {\n    var doctype, uidx;\n    if (doc._id && (uidx = doc._id.indexOf('_')) > 0 && !doc.data.archived) {\n      doctype = doc._id.substring(0, uidx);\n      if (doctype === 'sequence') {\n        emit(doc.data.prefix);\n      }\n    }\n  }"
+   }
+  },
+  "_revisions": {
+   "start": 2,
+   "ids": [
+    "1eebd1c656e6f2fe91d9facff099c54f",
+    "8ac3a62b4c0b624ebed3b68b27cd197e"
+   ]
+  }
+ },
+ {
+  "_id": "_design/sequence_by_prefix",
+  "_rev": "2-dcfc7e63d8ab52146460bd36ff0d5555",
+  "_deleted": true,
+  "_revisions": {
+   "start": 2,
+   "ids": [
+    "dcfc7e63d8ab52146460bd36ff0d5555",
+    "10f81c9287f2db782b8e293e7d9b1cde"
+   ]
+  }
+ },
+ {
+  "_id": "_design/visit_by_discharge_date",
+  "_rev": "2-8790e56f778bdaff83ccb96cdc109a6d",
+  "version": 2,
+  "views": {
+   "visit_by_discharge_date": {
+    "map": "function(doc) {\n    var doctype, uidx;\n    if (doc._id && (uidx = doc._id.indexOf('_')) > 0 && !doc.data.archived) {\n      doctype = doc._id.substring(0, uidx);\n      if (doctype === 'visit') {\n        var endDate = doc.data.endDate;\n    if (endDate && endDate !== \"\") {\n      endDate = new Date(endDate);\n      if (endDate.getTime) {\n        endDate = endDate.getTime();\n      }\n    }\n    emit([endDate, doc._id]);\n      }\n    }\n  }"
+   }
+  },
+  "_revisions": {
+   "start": 2,
+   "ids": [
+    "8790e56f778bdaff83ccb96cdc109a6d",
+    "e53c95160dacaf007fe01c01215729ce"
+   ]
+  }
+ },
+ {
+  "_id": "_design/visit_by_discharge_date",
+  "_rev": "2-a14fd5cb9029d2e114f084d7ce01d874",
+  "_deleted": true,
+  "_revisions": {
+   "start": 2,
+   "ids": [
+    "a14fd5cb9029d2e114f084d7ce01d874",
+    "b4baca85d54e727966aeb2e8ad172136"
+   ]
+  }
+ },
+ {
+  "_id": "_design/auth",
+  "_rev": "2-602229834ab5dec5ab2e3b644a81d4d3",
+  "validate_doc_update": "function(newDoc, oldDoc, userCtx) { if(userCtx.roles.indexOf('_admin')!== -1 || userCtx.roles.indexOf('admin')!== -1){ if (newDoc._id.indexOf('_design') === 0 || newDoc._id === 'fhir_audit') { return; }}if (newDoc._id.indexOf('_') !== -1) {var idParts=newDoc._id.split('_');if (idParts.length >= 3) { var allowedTypes=['allergy','appointment','attachment','billingLineItem','customForm','diagnosis','imaging','incCategory','incidentNote','incident','invLocation','invPurchase','invRequest','inventory','invoice','lab','lineItemDetail','lookup','medication','operationReport','operativePlan','option','overridePrice','patientNote','patient','payment','photo','priceProfile','pricing','procCharge','procedure','questionnaire','questionnaireResponse','report','sequence','userRole','visit','vital'];if (allowedTypes.indexOf(idParts[0]) !== -1) {if(newDoc._deleted || newDoc.data) {return;}}}}throw({forbidden: 'Invalid data'});}",
+  "_revisions": {
+   "start": 2,
+   "ids": [
+    "602229834ab5dec5ab2e3b644a81d4d3",
+    "e8ad71bef1d2a704752371a35266147a"
+   ]
+  }
+ }
+]

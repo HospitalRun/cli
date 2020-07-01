@@ -4,6 +4,7 @@ import mkdirp from 'mkdirp'
 import rimraf from 'rimraf'
 
 import extract from '../src/ddoc/extract/extract'
+import build from '../src/ddoc/build/build'
 
 const dummyData = join(__dirname, './dummy-data')
 
@@ -35,6 +36,15 @@ test('Should extract design documents from a backup', async (t: any) => {
     })
   })
 
-  t.tearDown(() => rimraf.sync(destinationFolder))
+  t.test('from TypeScript', async () => {
+    await build(destinationFolder, {
+      config: join(__dirname, './tsconfig.build-test.json'),
+    })
+  })
+
+  t.tearDown(() => {
+    rimraf.sync(destinationFolder)
+    rimraf.sync(join(dummyData, 'designs'))
+  })
   t.end()
 })

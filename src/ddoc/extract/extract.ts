@@ -109,12 +109,12 @@ export default async function (
           for (const view of Object.keys(doc.views)) {
             if (doc.views[view].map) {
               const name = `${doc._id}-${doc._rev}.views.${view}.map`
-              methods.set(name, doc.views[view].map!)
+              methods.set(name, doc.views[view].map!) // eslint-disable-line
               doc.views[view].map = name
             }
             if (doc.views[view].reduce) {
               const name = `${doc._id}-${doc._rev}.views.${view}.reduce`
-              methods.set(name, doc.views[view].reduce!)
+              methods.set(name, doc.views[view].reduce!) // eslint-disable-line
               doc.views[view].reduce = name
             }
           }

@@ -66,7 +66,7 @@ async function build(src, opts) {
                         return val.toString();
                     }
                     return val;
-                }, 1);
+                }, 1).replace(/  +/g, ' ');
                 await writeFile(path_1.default.join(dest, `${filename}.json`), stringifiedDesign);
             }
             catch (error) {

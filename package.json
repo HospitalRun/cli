@@ -34,7 +34,7 @@
     "mkdirp": "~1.0.3",
     "require-from-string": "~2.0.2",
     "sade": "~1.7.3",
-    "typescript": "~3.9.3"
+    "typescript": "~3.9.5"
   },
   "devDependencies": {
     "@commitlint/cli": "~9.0.1",
