@@ -14,8 +14,18 @@ Main features:
 - Extract and convert to `.json` `.ts` `.js` design documents from CouchDB backups
 
 TODO list:
-- Allow backups directly from HR cli
-- Add command to run HospitalRun frontend/server inside Docker
+- [ ]  Allow backups directly from HR cli
+- [ ] Add command to run HospitalRun frontend/server inside Docker
+
+## CLI commands
+
+| Command | Description |
+| -- | --|
+| `hospitalrun ddoc extract` |Extract design document(s) from database exported backup file into TypeScript files.|
+| `hospitalrun ddoc build` |Build design document(s) from TypeScript files. Files can be imported directly into CouchDB.|
+
+
+More information and examples can be found with `hospitalrun --help` command
 
 <hr />
 
